@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Gửi Dữ Liệu</title>
+  <script>
+    function getUserIP() {
+      fetch("https://api.ipify.org?format=json")
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById("ip").value = data.ip;
+        })
+        .catch(error => console.error('Lỗi lấy IP:', error));
+    }
+
+    function submitForm() {
+      var name = document.getElementById("name").value;
+      var age = document.getElementById("age").value;
+      var address = document.getElementById("address").value;
+      var ip = document.getElementById("ip").value;
+      var city = document.getElementById("city").value;
+      var region = document.getElementById("region").value;
+      var country = document.getElementById("country").value;
+
+      var data = {
+        name: name,
+        age: age,
+        address: address,
+        ip: ip,
+        city: city,
+        region: region,
+        country: country
+      };
+
+      // Gửi yêu cầu POST tới Web App của Google Apps Script
+      fetch('https://script.google.com/macros/s/AKfycbxAk6pvBmV5CRfJJJddn7AjCFI9HxSC0a4JEVMj38xLhyQqaJuaXvD2fNPRlUlxaQYMNA/exec', {
+        method: 'POST',
+        body: new URLSearchParams(data),
+      })
+      .then(response => response.text())
+      .then(result => alert('Dữ liệu đã được gửi thành công!'))
+      .catch(error => console.error('Lỗi gửi dữ liệu:', error));
+    }
+
+    window.onload = function() {
+      getUserIP(); // Lấy địa chỉ IP khi trang được tải
+    };
+  </script>
+</head>
+<body>
+  <h1>Form Gửi Dữ Liệu</h1>
+  <form onsubmit="event.preventDefault(); submitForm();">
+    <label for="name">Tên:</label>
+    <input type="text" id="name" required><br><br>
+
+    <label for="age">Tuổi:</label>
+    <input type="number" id="age" required><br><br>
+
+    <label for="address">Địa chỉ:</label>
+    <input type="text" id="address" required><br><br>
+
+    <label for="ip">IP:</label>
+    <input type="text" id="ip" readonly><br><br>
+
+    <label for="city">Thành phố:</label>
+    <input type="text" id="city" required><br><br>
+
+    <label for="region">Khu vực:</label>
+    <input type="text" id="region" required><br><br>
+
+    <label for="country">Quốc gia:</label>
+    <input type="text" id="country" required><br><br>
+
+    <button type="submit">Gửi Dữ Liệu</button>
+  </form>
+</body>
+</html>
